@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SNO BOT - لوحة التحكم المميزة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2F2659;
+            --secondary-color: #FFFFFF;
+            --accent-color: #6C63FF;
+            --gradient: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            overflow-x: hidden;
+        }
+
+        .dashboard {
+            min-height: 100vh;
+            position: relative;
+        }
+
+        header {
+            background: var(--gradient), url('https://cdn.discordapp.com/attachments/1377799649372536966/1407407699926450227/ChatGPT_Image_19_2025_07_55_10_.png?ex=68a5fe10&is=68a4ac90&hm=ffaf2a2a7b1e6c75046729e1f4207170d2f1bc9557e1c8c1b11ebdf99d060b9d');
+            background-blend-mode: overlay;
+            background-size: cover;
+            background-position: center;
+            color: var(--secondary-color);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(47, 38, 89, 0.2);
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+            pointer-events: none;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(135deg, #FFFFFF, #E0E0E0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .main-content {
+            padding: 4rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .explore-btn, .add-bot-btn, .policy-btn {
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 280px;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .explore-btn {
+            background: var(--gradient);
+            color: var(--secondary-color);
+            box-shadow: 0 10px 25px rgba(108, 99, 255, 0.4);
+        }
+
+        .explore-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .explore-btn:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 15px 35px rgba(108, 99, 255, 0.5);
+        }
+
+        .explore-btn:hover::before {
+            opacity: 1;
+        }
+
+        .add-bot-btn {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            box-shadow: 0 10px 25px rgba(47, 38, 89, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .add-bot-btn:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 15px 35px rgba(47, 38, 89, 0.4);
+            background-color: #3a326d;
+        }
+
+        .policy-btn {
+            background-color: rgba(47, 38, 89, 0.1);
+            color: var(--primary-color);
+            border: 2px solid rgba(47, 38, 89, 0.2);
+            margin-top: 2rem;
+        }
+
+        .policy-btn:hover {
+            background-color: rgba(47, 38, 89, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 5rem;
+            width: 100%;
+        }
+
+        .feature-card {
+            background-color: var(--secondary-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 40px rgba(47, 38, 89, 0.08);
+            border: 1px solid rgba(47, 38, 89, 0.05);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+            transition: height 0.3s ease;
+            z-index: -1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(47, 38, 89, 0.15);
+        }
+
+        .feature-card:hover::before {
+            height: 100%;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .feature-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .feature-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: var(--gradient);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .feature-card:hover .feature-title::after {
+            width: 80px;
+        }
+
+        .feature-desc {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            opacity: 0.9;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .feature-desc {
+            color: var(--secondary-color);
+            opacity: 0.95;
+        }
+
+        footer {
+            background: var(--gradient);
+            color: var(--secondary-color);
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            margin-top: 6rem;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' fill='%232F2659' opacity='.25'/%3E%3Cpath d='M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z' fill='%232F2659' opacity='.5'/%3E%3Cpath d='M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z' fill='%232F2659'/%3E%3C/svg%3E");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 1.5rem;
+        }
+
+        .footer-policy-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        .footer-policy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .footer-policy-btn i {
+            margin-left: 8px;
+        }
+
+        .policy-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(47, 38, 89, 0.9);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .policy-container {
+            background-color: var(--secondary-color);
+            max-width: 900px;
+            margin: 2rem auto;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .close-policy {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            cursor: pointer;
+            background: rgba(47, 38, 89, 0.1);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-policy:hover {
+            background: rgba(47, 38, 89, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .policy-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .policy-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .policy-subtitle {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            opacity: 0.8;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .policy-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--gradient);
+            border-radius: 3px;
+        }
+
+        .section-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--primary-color);
+        }
+
+        .section-content ul {
+            list-style-type: none;
+            margin: 1.5rem 0;
+        }
+
+        .section-content li {
+            margin-bottom: 1rem;
+            position: relative;
+            padding-right: 1.5rem;
+        }
+
+        .section-content li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 0;
+            top: 0;
+            color: var(--accent-color);
+        }
+
+        .highlight-box {
+            background: rgba(108, 99, 255, 0.1);
+            border-right: 4px solid var(--accent-color);
+            padding: 1.5rem;
+            border-radius: 8px 0 0 8px;
+            margin: 2rem 0;
+        }
+
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @media (max-width: 768px) {
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .logo {
+                font-size: 2.2rem;
+            }
+
+            .feature-card {
+                padding: 2rem;
+            }
+
+            .policy-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .policy-title {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <header>
+            <div class="logo floating">SNO BOT</div>
+            <div class="tagline">تجربة بوتية فريدة بلمسات من الإبداع والتميز</div>
+        </header>
+
+        <div class="main-content">
+            <div class="cta-buttons">
+                <a href="https://discord.gg/zU26Bf9Rpe" class="explore-btn">
+                    <i class="fas fa-compass" style="margin-left: 10px;"></i>
+                    سيرفر الدعم
+                </a>
+                <a href="https://discord.com/oauth2/authorize?client_id=1386104230950998047&permissions=8&integration_type=0&scope=bot" class="add-bot-btn">
+                    <i class="fas fa-robot" style="margin-left: 10px;"></i>
+                    أضف البوت
+                </a>
+                <button class="policy-btn" id="policyBtn">
+                    <i class="fas fa-shield-alt" style="margin-left: 10px;"></i>
+                    سياسة الخصوصية
+                </button>
+            </div>
+
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="feature-title">سرعة فائقة</h3>
+                    <p class="feature-desc">أداء سريع خارق مع استجابة فورية لجميع الأوامر دون أي تأخير يذكر</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">حماية متكاملة</h3>
+                    <p class="feature-desc">نظام حماية متطور بطبقات متعددة ضد جميع أنواع التهديدات والمخترقين</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="feature-title">واجهة أنيقة</h3>
+                    <p class="feature-desc">تصميم عصري أنيق مع ألوان متناسقة وتجربة مستخدم لا تضاهى</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-content">
+                <div class="footer-logo">SNO BOT</div>
+                <p>بوت متكامل بكل ما تحتاجه من مميزات وأدوات لإدارة مثالية</p>
+                <div class="copyright">
+                    &copy; 2023 SNO - جميع الحقوق محفوظة
+                </div>
+                <button class="footer-policy-btn" id="footerPolicyBtn">
+                    <i class="fas fa-file-contract"></i>
+                    سياسة الخصوصية
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <div class="policy-modal" id="policyModal">
+        <div class="policy-container">
+            <span class="close-policy" id="closePolicy">&times;</span>
+            <div class="policy-header">
+                <h1 class="policy-title">سياسة الخصوصية لـ SNO BOT</h1>
+                <p class="policy-subtitle">نحن نحرص على حماية خصوصيتك وأمان بياناتك. هذه السياسة توضح كيفية تعاملنا مع معلوماتك.</p>
+            </div>
+
+            <div class="policy-section">
+                <h2 class="section-title">جمع البيانات</h2>
+                <div class="section-content">
+                    <p>عند استخدامك للبوت، يتم جمع بعض المعلومات الأساسية فقط من أجل تحسين الخدمة وتجربة المستخدم:</p>
+                    <ul>
+                        <li>معرف المستخدم (User ID)</li>
+                        <li>الرسائل داخل البوت</li>
+                        <li>بيانات التفاعل والأوامر المستخدمة</li>
+                        <li>إعدادات المستخدم المفضلة</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="policy-section">
+                <h2 class="section-title">استخدام البيانات</h2>
+                <div class="section-content">
+                    <p>البيانات التي نجمعها تستخدم حصراً لتحسين تجربة المستخدم وتقديم خدمة أفضل:</p>
+                    <ul>
+                        <li>تحسين أداء البوت وإصلاح الأخطاء</li>
+                        <li>تخصيص الإعدادات والتفضيلات</li>
+                        <li>إرسال التنبيهات والإشعارات المهمة</li>
+                        <li>تحليل الاستخدام لتطوير ميزات جديدة</li>
+                    </ul>
+
+                    <div class="highlight-box">
+                        <strong>ملاحظة مهمة:</strong> لا نستخدم بياناتك لأي أغراض تسويقية أو نشاركها مع جهات خارجية بدون موافقتك الصريحة.
+                    </div>
+                </div>
+            </div>
+
+            <div class="policy-section">
+                <h2 class="section-title">حماية البيانات</h2>
+                <div class="section-content">
+                    <p>نلتزم بأعلى معايير الأمان لحماية بياناتك:</p>
+                    <ul>
+                        <li>تخزين البيانات في خوادم آمنة مشفرة</li>
+                        <li>استخدام تقنيات تشفير متقدمة</li>
+                        <li>الوصول المحدود للبيانات فقط للضرورة</li>
+                        <li>عدم مشاركة البيانات مع أطراف ثالثة</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="policy-section">
+                <h2 class="section-title">مدة الاحتفاظ بالبيانات</h2>
+                <div class="section-content">
+                    <p>نحتفظ ببياناتك فقط للمدة اللازمة:</p>
+                    <ul>
+                        <li>حذف تلقائي بعد فترة عدم نشاط (90 يوم)</li>
+                        <li>حذف فوري عند طلب المستخدم</li>
+                        <li>احتفاظ بالبيانات المجمعة فقط لأغراض إحصائية</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="policy-section">
+                <h2 class="section-title">حقوق المستخدم</h2>
+                <div class="section-content">
+                    <p>لديك كامل الحق في التحكم ببياناتك:</p>
+                    <ul>
+                        <li>طلب نسخة من بياناتك الشخصية</li>
+                        <li>طلب تعديل أو تصحيح البيانات</li>
+                        <li>طلب حذف بياناتك بشكل كامل</li>
+                        <li>إلغاء الاشتراك من الإشعارات</li>
+                    </ul>
+
+                    <p>لتنفيذ أي من هذه الطلبات، يمكنك التواصل معنا عبر الدعم الفني للبوت.</p>
+                </div>
+            </div>
+
+            <div class="policy-footer">
+                <p>آخر تحديث: 1 يناير 2023</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Protection against F12 and Ctrl+Shift+J
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && e.key === 'J') || 
+                (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+                (e.ctrlKey && e.shiftKey && e.key === 'C') || 
+                (e.ctrlKey && e.shiftKey && e.key === 'K')) {
+                e.preventDefault();
+                alert('هذا الإجراء غير مسموح به');
+                return false;
+            }
+        });
+
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // Policy modal functionality
+        document.getElementById('policyBtn').addEventListener('click', function() {
+            document.getElementById('policyModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+
+        document.getElementById('footerPolicyBtn').addEventListener('click', function() {
+            document.getElementById('policyModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+
+        document.getElementById('closePolicy').addEventListener('click', function() {
+            document.getElementById('policyModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        window.addEventListener('click', function(event) {
+            if (event.target == document.getElementById('policyModal')) {
+                document.getElementById('policyModal').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>
